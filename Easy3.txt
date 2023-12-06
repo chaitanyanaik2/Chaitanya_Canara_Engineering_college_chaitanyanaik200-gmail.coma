@@ -1,0 +1,145 @@
+def generate(numRows):
+    if numRows == 0:
+        return []
+    
+    result = [[1]]
+    
+    for i in range(1, numRows):
+        row = [1]
+        for j in range(1, i):
+            row.append(result[i-1][j-1] + result[i-1][j])
+        row.append(1)
+        result.append(row)
+    
+    return result
+
+# Example usage:
+print(generate(5))
+print(generate(1))
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def lowestCommonAncestor(root, p, q):
+    if not root:
+        return None
+
+    if p.val < root.val and q.val < root.val:
+        return lowestCommonAncestor(root.left, p, q)
+    elif p.val > root.val and q.val > root.val:
+        return lowestCommonAncestor(root.right, p, q)
+    else:
+        return root
+
+# Example usage:
+def majorityElement(nums):
+    result = []
+    
+    if not nums:
+        return result
+    
+    candidate1, count1 = nums[0], 0
+    candidate2, count2 = nums[0], 0
+    
+    for num in nums:
+        if num == candidate1:
+            count1 += 1
+        elif num == candidate2:
+            count2 += 1
+        elif count1 == 0:
+            candidate1, count1 = num, 1
+        elif count2 == 0:
+            candidate2, count2 = num, 1
+        else:
+            count1 -= 1
+            count2 -= 1
+    
+    count1 = count2 = 0
+    
+    for num in nums:
+        if num == candidate1:
+            count1 += 1
+        elif num == candidate2:
+            count2 += 1
+    
+    if count1 > len(nums)//3:
+        result.append(candidate1)
+    if count2 > len(nums)//3:
+        result.append(candidate2)
+    
+    return result
+
+# Example usage:
+print(majorityElement([3, 2, 3]))
+print(majorityElement([1]))
+print(majorityElement([1, 2]))
+def maximalSquare(matrix):
+    if not matrix or not matrix[0]:
+        return 0
+
+    m, n = len(matrix), len(matrix[0])
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    max_side = 0
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if matrix[i - 1][j - 1] == '1':
+                dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
+                max_side = max(max_side, dp[i][j])
+
+    return max_side * max_side
+
+# Example usage:
+print(maximalSquare([["0"]]))
+print(maximalSquare([["0", "1"], ["1", "0"]]))
+print(maximalSquare([["1", "0", "1", "0", "0"],
+                    ["1", "0", "1", "1", "1"],
+                    ["1", "1", "1", "1", "1"],
+                    ["1", "0", "0", "1", "0"]]))
+from collections import deque
+
+def maxSlidingWindow(nums, k):
+    result = []
+    max_queue = deque()
+
+    for i, num in enumerate(nums):
+        while max_queue and num > nums[max_queue[-1]]:
+            max_queue.pop()
+        max_queue.append(i)
+
+        if i >= k - 1:
+            result.append(nums[max_queue[0]])
+
+            if max_queue[0] == i - k + 1:
+                max_queue.popleft()
+
+    return result
+
+# Example usage:
+print(maxSlidingWindow([1], 1))
+print(maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3))
+def shortestPalindrome(s):
+    rev_s = s[::-1]
+
+    for i in range(len(s)):
+        if s[:len(s)-i] == rev_s[i:]:
+            return rev_s[:i] + s
+
+# Example usage:
+print(shortestPalindrome("aacecaaa"))
+print(shortestPalindrome("abcd"))
+def countDigitOne(n):
+    count, factor = 0, 1
+
+    while factor <= n:
+        divisor = factor * 10
+        count += (n // divisor) * factor + min(max(n % divisor - factor + 1, 0), factor)
+        factor *= 10
+
+    return count
+
+# Example usage:
+print(countDigitOne(13))
+print(countDigitOne(0))
