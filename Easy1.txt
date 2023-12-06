@@ -1,0 +1,20 @@
+def length_of_last_word(s):
+ 
+    s = s.strip()
+    
+   
+    last_space_index = s.rfind(' ')
+    
+   
+    last_word = s[last_space_index + 1:] if last_space_index != -1 else s
+    return len(last_word)
+
+
+s1 = "Hello World"
+print(length_of_last_word(s1)) 
+
+s2 = "   fly me   to   the moon  "
+print(length_of_last_word(s2)) 
+
+s3 = "luffy is still joyboy"
+print(length_of_last_word(s3)) 
